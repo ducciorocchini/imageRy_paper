@@ -1,5 +1,6 @@
 library(imageRy)
 library(terra)
+library(ggplot2)
 library(patchwork) # for coupling ggplot2 graphs
 library(viridis)
 
@@ -19,14 +20,29 @@ plot(dvi2006, col=inferno(256), axes=F)
 mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg")
 mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
 
+mato1992 <- flip(mato1992)
+mato2006 <- flip(mato2006)
+
+set.seed(50)
 mato1992c <- im.classify(mato1992, num_clusters=2)
 mato2006c <- im.classify(mato2006, num_clusters=2)
 
-classes_names <- c("Forest", "Human")
+classes_names <- c("Human", "Forest")
 
 par(mfrow=c(1,2))
 plot(mato1992c, type="classes", levels=classes_names, axes=F)
 plot(mato2006c, type="classes", levels=classes_names, axes=F)
+
+## Calculating proportions
+prop1992 <- freq(mato1992c)*100/ncell(mato1992c)
+prop2006 <- freq(mato2006c)*100/ncell(mato2006c)
+
+## Creating a final dataframe (use the count column from prop1992 and prop2006)
+# Columns:
+class <- c("Human","Forest")
+p1992 <- c(17,83)
+p2006 <- c(45,55)
+tabout <- data.frame(class, p1992, p2006)
 
 ## Final plot (classification)
 p1 <- ggplot(tabout, aes(x=class, y=p1992, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
