@@ -19,8 +19,8 @@ plot(dvi2006, col=inferno(256), axes=F)
 mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg")
 mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
 
-mato1992c <- im.classify2(mato1992, num_clusters=2)
-mato2006c <- im.classify2(mato2006, num_clusters=2)
+mato1992c <- im.classify(mato1992, num_clusters=2)
+mato2006c <- im.classify(mato2006, num_clusters=2)
 
 classes_names <- c("Forest", "Human")
 
