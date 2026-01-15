@@ -1,3 +1,4 @@
+
 library(imageRy)
 library(terra)
 library(ggplot2)
@@ -8,13 +9,15 @@ library(viridis)
 mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg")
 mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
 
-# DVI
-dvi1992 <- im.dvi(mato1992, 1, 2)
-dvi2006 <- im.dvi(mato2006, 1, 2)
+# DVI with Brazil data
+brazil <- im.import("S2_AllBands_tropical.tif")
+dviind <- im.dvi(brazil, 8, 4)
+ndviind <- im.ndvi(brazil, 8, 4)
 
-par(mfrow=c(1,2))
-plot(dvi1992, col=inferno(256), axes=F)
-plot(dvi2006, col=inferno(256), axes=F)
+im.multiframe(1,3)
+im.plotRGB(brazil, 8, 3, 4)
+plot(dviind)
+plot(ndviind)
 
 # Classification
 
@@ -62,7 +65,7 @@ dat <- as.data.frame(X) %>%
   geom_point(alpha = 0.35, size = 0.6) +
   theme_minimal()
 
-# All band-vs-band scatters in one figure 
+# All band-vs-band scatters in one figure
 # install.packages("GGally") if needed
 library(GGally)
 library(viridis)
