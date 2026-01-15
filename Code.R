@@ -14,10 +14,11 @@ brazil <- im.import("S2_AllBands_tropical.tif")
 dviind <- im.dvi(brazil, 8, 4)
 ndviind <- im.ndvi(brazil, 8, 4)
 
-im.multiframe(1,3)
+library(viridis)
+im.multiframe(1,3) # which simulates par(mfrow=c(1,2))
 im.plotRGB(brazil, 8, 3, 4)
-plot(dviind)
-plot(ndviind)
+plot(dviind, col=inferno(100))
+plot(ndviind, col=inferno(100))
 
 # Classification
 
