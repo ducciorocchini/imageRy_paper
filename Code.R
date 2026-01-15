@@ -17,37 +17,158 @@ plot(dvi1992, col=inferno(256), axes=F)
 plot(dvi2006, col=inferno(256), axes=F)
 
 # Classification
-mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg")
-mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
 
-mato1992 <- flip(mato1992)
-mato2006 <- flip(mato2006)
+fal <- im.import("S2_AllBands_temperate_passo_falzarego.tif")
 
-set.seed(50)
-mato1992c <- im.classify(mato1992, num_clusters=2)
-mato2006c <- im.classify(mato2006, num_clusters=2)
+fal <- c(fal[[2]], fal[[3]], fal[[4]], fal[[8]])
+im.plotRGB(fal, 2, 4, 3)
 
-classes_names <- c("Human", "Forest")
+set.seed(42)
+falc <- im.classify(fal, num_clusters=3)
+plot(falc)
 
-par(mfrow=c(1,2))
-plot(mato1992c, type="classes", levels=classes_names, axes=F)
-plot(mato2006c, type="classes", levels=classes_names, axes=F)
+im.multiframe(1,2)
+im.plotRGB(fal, 2, 4, 3)
+plot(falc)
 
-## Calculating proportions
-prop1992 <- freq(mato1992c)*100/ncell(mato1992c)
-prop2006 <- freq(mato2006c)*100/ncell(mato2006c)
+library(terra)
+library(dplyr)
+library(ggplot2)
 
-## Creating a final dataframe (use the count column from prop1992 and prop2006)
-# Columns:
-class <- c("Human","Forest")
-p1992 <- c(17,83)
-p2006 <- c(45,55)
-tabout <- data.frame(class, p1992, p2006)
+# Give bands friendly names (optional but helps a lot)
+names(fal) <- c("B2","B3","B4","B8")
 
-## Final plot (classification)
-p1 <- ggplot(tabout, aes(x=class, y=p1992, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
-p2 <- ggplot(tabout, aes(x=class, y=p2006, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
-p1 + p2
+# Optional: drop NA pixels consistently across bands
+# (classify output might already match, but this is safe)
+# We'll sample to keep it fast and readable.
+set.seed(42)
+n <- 50000  # increase/decrease as you like
+
+# sample pixel indices from non-NA area
+v_mask <- !is.na(values(falc))
+idx <- which(v_mask)
+
+idx_s <- sample(idx, size = min(n, length(idx)))
+
+# extract values
+X  <- values(fal)[idx_s, , drop = FALSE]
+cl <- values(falc)[idx_s, 1]
+
+dat <- as.data.frame(X) %>%
+  mutate(cluster = factor(cl))
+
+# Simple plot
+# ggplot(dat, aes(B4, B8, color = cluster)) +
+  geom_point(alpha = 0.35, size = 0.6) +
+  theme_minimal()
+
+# All band-vs-band scatters in one figure 
+# install.packages("GGally") if needed
+library(GGally)
+library(viridis)
+
+GGally::ggpairs(
+  dat,
+  columns = c("B2","B3","B4","B8"),
+  aes(color = cluster, fill = cluster, alpha = 0.35),
+  diag = list(
+    continuous = wrap(
+      "densityDiag",
+      alpha = 0.5
+    )
+  )
+) +
+  scale_color_viridis_d(
+    option = "D",
+    end = 0.85,
+    name = "Cluster"
+  ) +
+  scale_fill_viridis_d(
+    option = "D",
+    end = 0.85,
+    guide = "none"
+  ) +
+  theme_minimal()
+
+# Divided
+ggplot(dat, aes(B4, B8)) +
+  geom_point(size = 1.8, colour = "black") +
+  facet_wrap(~ cluster) +
+  theme_gray(base_size = 12) +
+  labs(x = "B4", y = "B8")
+
+# Megagraph
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+bands <- c("B2", "B3", "B4", "B8")
+
+# tutte le coppie di bande (senza ripetizioni)
+band_pairs <- combn(bands, 2, simplify = FALSE)
+
+plot_df <- bind_rows(lapply(band_pairs, function(p) {
+  dat %>%
+    transmute(
+      x = .data[[p[1]]],
+      y = .data[[p[2]]],
+      pair = paste(p[1], "vs", p[2]),
+      cluster
+    )
+}))
+
+ggplot(plot_df, aes(x, y)) +
+  geom_point(size = 1.2, colour = "black", alpha = 0.6) +
+  facet_grid(cluster ~ pair, scales = "fixed") +
+  theme_gray(base_size = 11) +
+  labs(
+    x = NULL,
+    y = NULL
+  )
+
+# Histograms
+library(terra)
+library(dplyr)
+
+# frequency table (counts)
+fr <- terra::freq(falc)
+
+percs <- as.data.frame(fr) %>%
+  filter(!is.na(value)) %>%
+  transmute(
+    cluster = factor(value),
+    n = count,
+    perc = 100 * n / sum(n)
+  )
+
+percs
+
+
+ggplot(percs, aes(cluster, perc, fill = cluster)) +
+  geom_col(
+    colour = "black",
+    width = 0.65
+  ) +
+  geom_text(
+    aes(label = sprintf("%.1f%%", perc)),
+    vjust = -0.6,
+    size = 4
+  ) +
+  scale_fill_viridis_d(
+    option = "D",
+    end = 0.85,
+    name = "Cluster"
+  ) +
+  scale_y_continuous(
+    limits = c(0, max(percs$perc) * 1.15),
+    expand = c(0, 0)
+  ) +
+  theme_gray(base_size = 12) +
+  labs(
+    x = "Cluster",
+    y = "Area (%)",
+    title = "Final class percentages"
+  )
 
 # Variability measurement
 im.list()
