@@ -35,6 +35,25 @@ mtext("C)", side = 3, line = 1, adj = 0, font = 2)
 # Sentinel 4 bands
 sent <- im.import("sentinel.dolomites")
 
+par(mar = c(3.5, 3, 2.5, 1))
+im.multiframe(2,2)
+
+# --- Panel A: RGB visible ---
+im.plotRGB(sent, r = 3, g = 2, b = 1)
+mtext("A)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel B: NIR on red channel ---
+im.plotRGB(sent, r = 4, g = 3, b = 2)
+mtext("B)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel C: NIR on green channel ---
+im.plotRGB(sent, r = 3, g = 4, b = 2)
+mtext("C)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel D: NIR on blue channel ---
+im.plotRGB(sent, r = 3, g = 2, b = 4)
+mtext("D)", side = 3, line = 1, adj = 0, font = 2)
+
 
 # DVI with Brazil data
 brazil <- im.import("S2_AllBands_tropical.tif")
