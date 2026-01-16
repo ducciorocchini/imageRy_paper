@@ -1,4 +1,3 @@
-
 library(imageRy)
 library(terra)
 library(ggplot2)
@@ -15,10 +14,21 @@ dviind <- im.dvi(brazil, 8, 4)
 ndviind <- im.ndvi(brazil, 8, 4)
 
 library(viridis)
-im.multiframe(1,3) # which simulates par(mfrow=c(1,2))
-im.plotRGB(brazil, 8, 3, 4)
-plot(dviind, col=inferno(100))
-plot(ndviind, col=inferno(100))
+
+im.multiframe(1, 3)  # equivalent to par(mfrow = c(1,3))
+
+# --- Panel A ---
+im.plotRGB(brazil, 4, 8, 2)
+mtext("A)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel B ---
+plot(dviind, col = inferno(100))
+mtext("B)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel C ---
+plot(ndviind, col = inferno(100))
+mtext("C)", side = 3, line = 1, adj = 0, font = 2)
+
 
 # Classification
 
@@ -31,9 +41,16 @@ set.seed(42)
 falc <- im.classify(fal, num_clusters=3)
 plot(falc)
 
-im.multiframe(1,2)
-im.plotRGB(fal, 2, 4, 3)
-plot(falc)
+# show RGB and classes side-by-side
+im.multiframe(1, 2)
+
+# --- Panel A ---
+im.plotRGB(falz4, 2, 4, 3)
+mtext("A)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel B ---
+plot(falzc)
+mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 
 library(terra)
 library(dplyr)
@@ -108,7 +125,7 @@ library(ggplot2)
 
 bands <- c("B2", "B3", "B4", "B8")
 
-# tutte le coppie di bande (senza ripetizioni)
+# all pairwise bands (no repetition)
 band_pairs <- combn(bands, 2, simplify = FALSE)
 
 plot_df <- bind_rows(lapply(band_pairs, function(p) {
@@ -147,32 +164,14 @@ percs <- as.data.frame(fr) %>%
 
 percs
 
-
 ggplot(percs, aes(cluster, perc, fill = cluster)) +
-  geom_col(
-    colour = "black",
-    width = 0.65
-  ) +
-  geom_text(
-    aes(label = sprintf("%.1f%%", perc)),
-    vjust = -0.6,
-    size = 4
-  ) +
-  scale_fill_viridis_d(
-    option = "D",
-    end = 0.85,
-    name = "Cluster"
-  ) +
-  scale_y_continuous(
-    limits = c(0, max(percs$perc) * 1.15),
-    expand = c(0, 0)
-  ) +
+  geom_col(colour = "black", width = 0.65) +
+  geom_text(aes(label = sprintf("%.1f%%", perc)),
+            vjust = -0.6, size = 4) +
+  scale_fill_viridis_d(option = "D", end = 0.85, name = "Cluster") +
+  scale_y_continuous(limits = c(0, max(percs$perc) * 1.15), expand = c(0, 0)) +
   theme_gray(base_size = 12) +
-  labs(
-    x = "Cluster",
-    y = "Area (%)",
-    title = "Final class percentages"
-  )
+  labs(x = "Cluster", y = "Area (%)", title = "Class proportions")
 
 # Variability measurement
 im.list()
