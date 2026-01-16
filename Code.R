@@ -18,12 +18,23 @@ cl_cyanblue <- colorRampPalette(c(
   "palegreen"
 ))(100)
 
-plot(sentb2, col = cl_cyanblue)
-plot(sentb2, col=inferno(100))
+im.multiframe(1, 3)
 
-# Importing Mato Grosso data
-mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg")
-mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
+# --- Panel A ---
+plot(sentb2)
+mtext("A)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel B ---
+plot(sentb2, col = cl_cyanblue)
+mtext("B)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel C ---
+plot(sentb2, col = inferno(100))
+mtext("C)", side = 3, line = 1, adj = 0, font = 2)
+
+# Sentinel 4 bands
+sent <- im.import("sentinel.dolomites")
+
 
 # DVI with Brazil data
 brazil <- im.import("S2_AllBands_tropical.tif")
@@ -191,12 +202,9 @@ ggplot(percs, aes(cluster, perc, fill = cluster)) +
   labs(x = "Cluster", y = "Area (%)", title = "Class proportions")
 
 # Variability measurement
-im.list()
-sent <- im.import("sentinel.png")
-sent <- c(sent[[1]], sent[[2]], sent[[3]])
-sentsd <- focal(sent[[1]], matrix(1/25, 5, 5), fun=sd)
+sentsd <- focal(sent[[4]], w=5, fun=sd)
 
-im.plotRGB(sent, 1, 2, 3)
+im.plotRGB(sent, 3, 4, 2)
 plot(sentsd, col=viridis(255))
 
 # Multivariate analysis
@@ -204,19 +212,16 @@ sentpca <- im.pca(sent)
 sentpca
 plot(sentpca)
 
-sentpcasd <- focal(sentpca[[1]], matrix(1/25, 5, 5), fun=sd)
+sentpcasd <- focal(sentpca[[1]], w=5, fun=sd)
 
-par(mfrow=c(1,3))
-plotRGB(sent,1,2,3)
-plot(sentsd, col=viridis(255), main="standard deviation on band 1")
-plot(sentpcasd, col=magma(100), main="standard deviation on PC1")
+im.multiframe(1, 2)
+
+# --- Panel A ---
+plot(sentsd, col = viridis(255))
+mtext("A)", side = 3, line = 1, adj = 0, font = 2)
+
+# --- Panel B ---
+plot(sentpcasd, col = cividis(100))
+mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 
 #----
-
-# Band 2 figure from Sentinel-2 of the Tofane area
-
-im.multiframe(1,3)
-plot(b2)
-plot(b2, col=clcyan)
-plot(b2, col=inferno(100))
-
