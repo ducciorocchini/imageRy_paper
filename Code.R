@@ -4,6 +4,23 @@ library(ggplot2)
 library(patchwork) # for coupling ggplot2 graphs
 library(viridis)
 
+# Single band plotting
+sentb2 <- im.import("sentinel.dolomites.b2.tif")
+clcyan <- colorRampPalette(c("magenta", "cyan4", "cyan"))(100)}117
+
+cl_cyanblue <- colorRampPalette(c(
+  "navy",
+  "royalblue4",
+  "royalblue2",
+  "deepskyblue3",
+  "turquoise3",
+  "mediumaquamarine",
+  "palegreen"
+))(100)
+
+plot(sentb2, col = cl_cyanblue)
+plot(sentb2, col=inferno(100))
+
 # Importing Mato Grosso data
 mato1992 <- im.import("matogrosso_l5_1992219_lrg.jpg")
 mato2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
