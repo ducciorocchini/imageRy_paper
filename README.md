@@ -1,6 +1,33 @@
 # imageRy paper
 Code for the paper on the imageRy package
 
+---
+
+## Repository structure
+
+This repository contains the code and documentation needed to reproduce the analyses and figures presented in the paper.
+
+```
+imageRy_paper/
+├── Code.R
+├── README.md
+└── Study_areas.md
+```
+
+### File descriptions
+
+* **`README.md`**
+  Provides an overview of the repository and its purpose. It summarizes the paper workflow and explains how the code relates to the manuscript.
+
+* **`Code.R`**
+  Main R script reproducing all analyses and figures shown in the paper.
+  The script follows the same logical order as the manuscript sections, from image visualization to spectral indices, image classification, spatial variability, and multivariate analysis.
+
+* **`Study_areas.md`**
+  Describes the study areas and example datasets used in the paper, providing geographical and ecological context for the remote sensing analyses.
+
+---
+
 # Workflow of sections and functions
 
 ---
