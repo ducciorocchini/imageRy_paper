@@ -1,30 +1,55 @@
-## Appendix: Study areas
+# Appendix: Study areas 🌍
 
-This appendix provides brief descriptions of the geographic areas used as case
-studies in this paper:
+This appendix provides brief descriptions of the geographic areas used as case studies in this paper:
 
-Empowering ecological remote sensing learning: the `imageRy` R package to help students and instructors
+*Empowering ecological remote sensing learning: the `imageRy` R package to help students and instructors*
 
-### 1. Tofane and Passo Falzarego (Italy) – used for Figures 1, 2, 5, 8. 9 
+---
 
-The Tofane massif and the Passo Falzarego area are located in the Dolomites,
-Northern Italy. This mountainous region is characterized by steep elevation
-gradients, complex terrain morphology, and heterogeneous land cover, including
-alpine grasslands, coniferous forests, bare rock, and seasonal snow cover. The
-area represents a challenging and illustrative test case for ecological remote
-sensing analyses due to strong topographic effects and high spatial variability
-in spectral responses.
+## 1. Tofane massif 🏔️ – used for Figures 1, 2, 3, 8, 9
 
-<img width="1708" height="758" alt="tofane_passo_falzarego" src="https://github.com/user-attachments/assets/7eaf3c06-6ce9-4d5a-b2b4-935897d56583" />
+The **Tofane massif** is a striking mountain group in the **Dolomites of northeastern Italy**, rising above the town of **Cortina d’Ampezzo**. Renowned for its dramatic limestone cliffs, wide alpine plateaus, and historic **World War I sites**, the massif includes its highest peak, **Tofana di Mezzo (3,244 m)**. Today, the Tofane are a major destination for hiking, climbing, and skiing ⛷️🥾, and form part of the **UNESCO World Heritage Dolomites**.
 
+> Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
+```
+var pt = ee.Geometry.Point([12.136105, 46.494195]);
+Map.centerObject(pt, 13);
+Map.addLayer(pt, {color: 'red'}, 'Raster center');
+```
 
+<img width="1721" height="988" alt="Screenshot 2026-01-19 at 16 01 25" src="https://github.com/user-attachments/assets/45ddf928-cfc4-4ee0-bbd6-1941801b6925" />
 
-### 2. Mato Grosso (Brazil) - used for Figure 4
+---
 
-The Mato Grosso study area is located in central-western Brazil and encompasses
-a mosaic of land-cover types associated with tropical forests, savannas
-(Cerrado), and agricultural landscapes. The region is widely used in remote
-sensing studies because of its rapid land-use dynamics and strong contrasts
-between natural and managed ecosystems. This area provides an effective example
-for demonstrating large-scale image analysis and classification workflows in
-tropical environments.
+## 2. Taboca rainforest (Brazil) 🌿 – used for Figure 4
+
+The **Taboca area**, located along the **Rio Carabinani** in the **Amazonas region of Brazil**, is a remote and largely pristine section of the **Amazon rainforest**. Characterized by dense tropical vegetation, blackwater rivers, and exceptionally rich biodiversity 🐒🦜, the area lies within the broader **Jaú River basin**, recognized for its high ecological value. Taboca is inhabited mainly by traditional riverine communities and plays an important role in conserving Amazonian forest and freshwater ecosystems.
+
+> Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
+```
+var pt = ee.Geometry.Point([-61.917725, -2.5009545]);
+Map.centerObject(pt, 13);
+Map.addLayer(pt, {color: 'red'}, 'Raster center');
+```
+
+<img width="1720" height="988" alt="Screenshot 2026-01-19 at 15 53 43" src="https://github.com/user-attachments/assets/4dbf6ba0-ec3e-4a6f-977d-51cad2f6e39c" />
+
+---
+
+## 3. Passo Falzarego 🌲 – used for Figures 5, 6, 7
+
+The **temperate mixed forests near Passo Falzarego**, in the **Dolomites of northeastern Italy**, form a diverse mountain landscape between alpine meadows and rugged rocky peaks. These forests are dominated by **spruce, larch, fir, and beech**, creating a heterogeneous mosaic that varies with elevation and season 🍂❄️. Shaped by a cool alpine climate and rich in wildlife, the area also contains significant **World War I historical sites** and supports hiking, nature observation, and traditional mountain land use.
+
+> Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
+```
+var pt = ee.Geometry.Point(
+  [745645, 5163490],
+  ee.Projection('EPSG:32632')
+);
+Map.centerObject(pt, 13);
+Map.addLayer(pt, {color: 'red'}, 'Raster center');
+```
+
+<img width="1712" height="989" alt="Screenshot 2026-01-19 at 16 04 43" src="https://github.com/user-attachments/assets/a5d69ef3-7a6b-40c4-8e18-924082fc7e60" />
+
+---
