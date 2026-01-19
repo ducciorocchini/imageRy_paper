@@ -28,7 +28,7 @@ Map.centerObject(pt, 13);
 Map.addLayer(pt, {color: 'red'}, 'Raster center');
 ```
 
-<img width="1721" height="988" alt="Screenshot 2026-01-19 at 16 01 25" src="https://github.com/user-attachments/assets/45ddf928-cfc4-4ee0-bbd6-1941801b6925" />
+<img width="1716" height="976" alt="Screenshot 2026-01-19 at 17 14 12" src="https://github.com/user-attachments/assets/5b90e7f2-d76f-493e-b4b1-7b9e8a8cc042" />
 
 ---
 
@@ -54,7 +54,7 @@ Map.centerObject(pt, 13);
 Map.addLayer(pt, {color: 'red'}, 'Raster center');
 ```
 
-<img width="1720" height="988" alt="Screenshot 2026-01-19 at 15 53 43" src="https://github.com/user-attachments/assets/4dbf6ba0-ec3e-4a6f-977d-51cad2f6e39c" />
+<img width="1707" height="983" alt="Screenshot 2026-01-19 at 17 11 55" src="https://github.com/user-attachments/assets/3fbbb210-46ec-4f2e-b602-60161b274df3" />
 
 ---
 
@@ -80,6 +80,6 @@ Map.centerObject(pt, 13);
 Map.addLayer(pt, {color: 'red'}, 'Raster center');
 ```
 
-<img width="1712" height="989" alt="Screenshot 2026-01-19 at 16 04 43" src="https://github.com/user-attachments/assets/a5d69ef3-7a6b-40c4-8e18-924082fc7e60" />
+<img width="1721" height="982" alt="Screenshot 2026-01-19 at 17 12 59" src="https://github.com/user-attachments/assets/0f52fcf7-8d67-4e35-ba8e-08356cb97d29" />
 
 ---
