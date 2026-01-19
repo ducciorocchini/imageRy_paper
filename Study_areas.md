@@ -20,7 +20,10 @@ The **Tofane massif** is a striking mountain group in the **Dolomites of northea
 
 Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
 ```
-var pt = ee.Geometry.Point([12.136105, 46.494195]);
+var pt = ee.Geometry.Point(
+  [745645, 5163490],
+  ee.Projection('EPSG:32632')
+);
 Map.centerObject(pt, 13);
 Map.addLayer(pt, {color: 'red'}, 'Raster center');
 ```
@@ -43,7 +46,10 @@ The **Taboca area**, located along the **Rio Carabinani** in the **Amazonas regi
 
 Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
 ```
-var pt = ee.Geometry.Point([-61.917725, -2.5009545]);
+var pt = ee.Geometry.Point(
+  [-61.917725, -2.5009545],
+  ee.Projection('EPSG:4326')
+);
 Map.centerObject(pt, 13);
 Map.addLayer(pt, {color: 'red'}, 'Raster center');
 ```
@@ -67,8 +73,8 @@ The **temperate mixed forests near Passo Falzarego**, in the **Dolomites of nort
 Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
 ```
 var pt = ee.Geometry.Point(
-  [745645, 5163490],
-  ee.Projection('EPSG:32632')
+  [12.136105, 46.494195],
+  ee.Projection('EPSG:4326')
 );
 Map.centerObject(pt, 13);
 Map.addLayer(pt, {color: 'red'}, 'Raster center');
