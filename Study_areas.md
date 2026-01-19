@@ -10,7 +10,7 @@ This appendix provides brief descriptions of the geographic areas used as case s
 
 The **Tofane massif** is a striking mountain group in the **Dolomites of northeastern Italy**, rising above the town of **Cortina d’Ampezzo**. Renowned for its dramatic limestone cliffs, wide alpine plateaus, and historic **World War I sites**, the massif includes its highest peak, **Tofana di Mezzo (3,244 m)**. Today, the Tofane are a major destination for hiking, climbing, and skiing ⛷️🥾, and form part of the **UNESCO World Heritage Dolomites**.
 
-> Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
+Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
 ```
 var pt = ee.Geometry.Point([12.136105, 46.494195]);
 Map.centerObject(pt, 13);
@@ -25,7 +25,7 @@ Map.addLayer(pt, {color: 'red'}, 'Raster center');
 
 The **Taboca area**, located along the **Rio Carabinani** in the **Amazonas region of Brazil**, is a remote and largely pristine section of the **Amazon rainforest**. Characterized by dense tropical vegetation, blackwater rivers, and exceptionally rich biodiversity 🐒🦜, the area lies within the broader **Jaú River basin**, recognized for its high ecological value. Taboca is inhabited mainly by traditional riverine communities and plays an important role in conserving Amazonian forest and freshwater ecosystems.
 
-> Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
+Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
 ```
 var pt = ee.Geometry.Point([-61.917725, -2.5009545]);
 Map.centerObject(pt, 13);
@@ -40,7 +40,7 @@ Map.addLayer(pt, {color: 'red'}, 'Raster center');
 
 The **temperate mixed forests near Passo Falzarego**, in the **Dolomites of northeastern Italy**, form a diverse mountain landscape between alpine meadows and rugged rocky peaks. These forests are dominated by **spruce, larch, fir, and beech**, creating a heterogeneous mosaic that varies with elevation and season 🍂❄️. Shaped by a cool alpine climate and rich in wildlife, the area also contains significant **World War I historical sites** and supports hiking, nature observation, and traditional mountain land use.
 
-> Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
+Use this JavaScript in Google Earth Engine to replicate the screenshot 🗺️
 ```
 var pt = ee.Geometry.Point(
   [745645, 5163490],
