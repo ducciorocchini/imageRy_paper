@@ -4,7 +4,11 @@ library(ggplot2)
 library(patchwork) # for coupling ggplot2 graphs
 library(viridis)
 
-# Single band plotting
+# For evey figure in the paper the header is defined by: #####
+# e.g.: ##### Single band plotting #####
+# We avoid using Figure 1, Figure 2, etc. in case the paper is changing in time
+
+##### Single band plotting #####
 sentb2 <- im.import("sentinel.dolomites.b2.tif")
 clcyan <- colorRampPalette(c("magenta", "cyan4", "cyan"))(100)}117
 
@@ -32,6 +36,8 @@ mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 plot(sentb2, col = inferno(100))
 mtext("C)", side = 3, line = 1, adj = 0, font = 2)
 
+##### RGB space plotting #####
+
 # Sentinel 4 bands
 sent <- im.import("sentinel.dolomites")
 
@@ -54,8 +60,7 @@ mtext("C)", side = 3, line = 1, adj = 0, font = 2)
 im.plotRGB(sent, r = 3, g = 2, b = 4)
 mtext("D)", side = 3, line = 1, adj = 0, font = 2)
 
-
-# DVI with Brazil data
+##### DVI with Brazil data #####
 brazil <- im.import("S2_AllBands_tropical.tif")
 dviind <- im.dvi(brazil, 8, 4)
 ndviind <- im.ndvi(brazil, 8, 4)
@@ -76,19 +81,25 @@ mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 plot(ndviind, col = inferno(100))
 mtext("C)", side = 3, line = 1, adj = 0, font = 2)
 
+##### Classification #####
 
-# Classification
+falz <- im.import("S2_AllBands_temperate_passo_falzarego.tif")
 
-fal <- im.import("S2_AllBands_temperate_passo_falzarego.tif")
+# build a 4-band stack (B2, B3, B4, B8)
+falz4 <- c(falz[[2]], falz[[3]], falz[[4]], falz[[8]])
+names(falz4) <- c("B2","B3","B4","B8")
 
-fal <- c(fal[[2]], fal[[3]], fal[[4]], fal[[8]])
-im.plotRGB(fal, 2, 4, 3)
+# visualize (RGB)
+im.plotRGB(falz4, 2, 4, 3)
 
+# unsupervised classification (k-means-like clustering)
 set.seed(42)
-falc <- im.classify(fal, num_clusters=3)
-plot(falc)
+falzc <- im.classify(falz4, num_clusters=3)
 
+# plot the classification result
+plot(falzc)
 # show RGB and classes side-by-side
+
 im.multiframe(1, 2)
 
 # --- Panel A ---
@@ -96,8 +107,16 @@ im.plotRGB(falz4, 2, 4, 3)
 mtext("A)", side = 3, line = 1, adj = 0, font = 2)
 
 # --- Panel B ---
-plot(falzc)
+# define the colors you want (one per class)
+cols <- c("#371259", "#21908C", "#7FE65C")
+
+plot(falzc,
+     col = cols,
+     legend = TRUE)
+
 mtext("B)", side = 3, line = 1, adj = 0, font = 2)
+
+##### Scatterplot matrix of classes #####
 
 library(terra)
 library(dplyr)
@@ -158,14 +177,14 @@ GGally::ggpairs(
   ) +
   theme_minimal()
 
-# Divided
+# Divided (optional)
 ggplot(dat, aes(B4, B8)) +
   geom_point(size = 1.8, colour = "black") +
   facet_wrap(~ cluster) +
   theme_gray(base_size = 12) +
   labs(x = "B4", y = "B8")
 
-# Megagraph
+# Megagraph (optional)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -194,13 +213,13 @@ ggplot(plot_df, aes(x, y)) +
     y = NULL
   )
 
-# Histograms
+###### Histograms on classified map #####
 library(terra)
 library(dplyr)
 
 # frequency table (counts)
-fr <- terra::freq(falc)
-
+fr <- terra::freq(falzc)
+  
 percs <- as.data.frame(fr) %>%
   filter(!is.na(value)) %>%
   transmute(
@@ -220,13 +239,13 @@ ggplot(percs, aes(cluster, perc, fill = cluster)) +
   theme_gray(base_size = 12) +
   labs(x = "Cluster", y = "Area (%)", title = "Class proportions")
 
-# Variability measurement
+###### Variability measurement #####
 sentsd <- focal(sent[[4]], w=5, fun=sd)
 
 im.plotRGB(sent, 3, 4, 2)
 plot(sentsd, col=viridis(255))
 
-# Multivariate analysis
+###### Multivariate analysis #####
 sentpca <- im.pca(sent)
 sentpca
 plot(sentpca)
