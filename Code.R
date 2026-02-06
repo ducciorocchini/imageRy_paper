@@ -262,4 +262,3 @@ mtext("A)", side = 3, line = 1, adj = 0, font = 2)
 plot(sentpcasd, col = cividis(100))
 mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 
-#----
