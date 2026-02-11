@@ -3,12 +3,13 @@ library(terra)
 library(ggplot2)
 library(patchwork) # for coupling ggplot2 graphs
 library(viridis)
+library(dplyr)
 
 # For evey figure in the paper the header is defined by: #####
 # e.g.: ##### Single band plotting #####
 # We avoid using Figure 1, Figure 2, etc. in case the paper is changing in time
 
-##### Single band plotting #####
+##### SINGLE BAND PLOTTING #####
 sentb2 <- im.import("sentinel.dolomites.b2.tif")
 clcyan <- colorRampPalette(c("magenta", "cyan4", "cyan"))(100)}117
 
@@ -36,7 +37,7 @@ mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 plot(sentb2, col = inferno(100))
 mtext("C)", side = 3, line = 1, adj = 0, font = 2)
 
-##### RGB space plotting #####
+##### RGB SPACE PLOTTING #####
 
 # Sentinel 4 bands
 sent <- im.import("sentinel.dolomites")
@@ -81,7 +82,7 @@ mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 plot(ndviind, col = inferno(100))
 mtext("C)", side = 3, line = 1, adj = 0, font = 2)
 
-##### Classification #####
+##### CLASSIFICATION #####
 
 falz <- im.import("S2_AllBands_temperate_passo_falzarego.tif")
 
@@ -116,7 +117,7 @@ plot(falzc,
 
 mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 
-##### Scatterplot matrix of classes #####
+##### SCATTERPLOT MATRIX OF CLASSES #####
 
 library(terra)
 library(dplyr)
@@ -213,9 +214,7 @@ ggplot(plot_df, aes(x, y)) +
     y = NULL
   )
 
-###### Histograms on classified map #####
-library(terra)
-library(dplyr)
+###### HISTOGRAMS ON CLASSIFIED MAP #####
 
 # frequency table (counts)
 fr <- terra::freq(falzc)
@@ -239,13 +238,13 @@ ggplot(percs, aes(cluster, perc, fill = cluster)) +
   theme_gray(base_size = 12) +
   labs(x = "Cluster", y = "Area (%)", title = "Class proportions")
 
-###### Variability measurement #####
-sentsd <- focal(sent[[4]], w=5, fun=sd)
+###### VARIABILITY MEASUREMENT #####
+sentsd <- im.kernel(sent[[4]], mw=5, fun="sd")
 
 im.plotRGB(sent, 3, 4, 2)
 plot(sentsd, col=viridis(255))
 
-###### Multivariate analysis #####
+###### MULTIVARIATE ANALYSIS #####
 sentpca <- im.pca(sent)
 sentpca
 plot(sentpca)
