@@ -11,7 +11,6 @@ library(dplyr)
 
 ##### SINGLE BAND PLOTTING #####
 sentb2 <- im.import("sentinel.dolomites.b2.tif")
-clcyan <- colorRampPalette(c("magenta", "cyan4", "cyan"))(100)}117
 
 cl_cyanblue <- colorRampPalette(c(
   "navy",
