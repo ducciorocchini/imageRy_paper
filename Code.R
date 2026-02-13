@@ -1,14 +1,16 @@
-library(imageRy)
-library(terra)
-library(ggplot2)
-library(patchwork) # for coupling ggplot2 graphs
-library(viridis)
-library(dplyr)
-library(GGally)
-
-# For evey figure in the paper the header is defined by: #####
+# For every figure in the paper the header is defined by: #####
 # e.g.: ##### Single band plotting #####
 # We avoid using Figure 1, Figure 2, etc. in case the paper is changing in time
+
+##### PACKAGES #####
+
+library(imageRy)   # Core package for raster image processing (importing, plotting, indices, classification, PCA, kernels)
+library(terra)     # Handling raster data structures and extracting pixel values / frequency tables
+library(ggplot2)   # Advanced plotting (scatterplots, histograms, faceting, themes)
+library(patchwork) # Combining multiple ggplot2 plots into composite figures
+library(viridis)   # Perceptually uniform color palettes (inferno, viridis, cividis)
+library(dplyr)     # Data manipulation (mutate, transmute, filter, bind_rows, piping)
+library(GGally)    # Scatterplot matrices (ggpairs) for multivariate band comparisons
 
 ##### SINGLE BAND PLOTTING #####
 sentb2 <- im.import("sentinel.dolomites.b2.tif")
@@ -66,8 +68,6 @@ brazil <- im.import("S2_AllBands_tropical.tif")
 dviind <- im.dvi(brazil, 8, 4)
 ndviind <- im.ndvi(brazil, 8, 4)
 
-library(viridis)
-
 im.multiframe(1, 3)  # equivalent to par(mfrow = c(1,3))
 
 # --- Panel A ---
@@ -119,10 +119,6 @@ mtext("B)", side = 3, line = 1, adj = 0, font = 2)
 
 ##### SCATTERPLOT MATRIX OF CLASSES #####
 
-library(terra)
-library(dplyr)
-library(ggplot2)
-
 # Give bands friendly names (optional but helps a lot)
 names(falz4) <- c("B2","B3","B4","B8")
 
@@ -151,9 +147,6 @@ dat <- as.data.frame(X) %>%
   theme_minimal()
 
 # All band-vs-band scatters in one figure
-# install.packages("GGally") if needed
-library(GGally)
-library(viridis)
 
 GGally::ggpairs(
   dat,
@@ -186,9 +179,6 @@ ggplot(dat, aes(B4, B8)) +
   labs(x = "B4", y = "B8")
 
 # Megagraph (optional)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
 
 bands <- c("B2", "B3", "B4", "B8")
 
@@ -260,4 +250,3 @@ mtext("A)", side = 3, line = 1, adj = 0, font = 2)
 # --- Panel B ---
 plot(sentpcasd, col = cividis(100))
 mtext("B)", side = 3, line = 1, adj = 0, font = 2)
-
