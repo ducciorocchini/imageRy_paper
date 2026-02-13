@@ -4,6 +4,7 @@ library(ggplot2)
 library(patchwork) # for coupling ggplot2 graphs
 library(viridis)
 library(dplyr)
+library(GGally)
 
 # For evey figure in the paper the header is defined by: #####
 # e.g.: ##### Single band plotting #####
@@ -123,7 +124,7 @@ library(dplyr)
 library(ggplot2)
 
 # Give bands friendly names (optional but helps a lot)
-names(fal) <- c("B2","B3","B4","B8")
+names(falz4) <- c("B2","B3","B4","B8")
 
 # Optional: drop NA pixels consistently across bands
 # (classify output might already match, but this is safe)
@@ -132,14 +133,14 @@ set.seed(42)
 n <- 50000  # increase/decrease as you like
 
 # sample pixel indices from non-NA area
-v_mask <- !is.na(values(falc))
+v_mask <- !is.na(values(falzc))
 idx <- which(v_mask)
 
 idx_s <- sample(idx, size = min(n, length(idx)))
 
 # extract values
-X  <- values(fal)[idx_s, , drop = FALSE]
-cl <- values(falc)[idx_s, 1]
+X  <- values(falz)[idx_s, , drop = FALSE]
+cl <- values(falzc)[idx_s, 1]
 
 dat <- as.data.frame(X) %>%
   mutate(cluster = factor(cl))
@@ -238,7 +239,7 @@ ggplot(percs, aes(cluster, perc, fill = cluster)) +
   labs(x = "Cluster", y = "Area (%)", title = "Class proportions")
 
 ###### VARIABILITY MEASUREMENT #####
-sentsd <- im.kernel(sent[[4]], mw=5, fun="sd")
+sentsd <- im.kernel(sent[[4]], mw=5, stat="sd")
 
 im.plotRGB(sent, 3, 4, 2)
 plot(sentsd, col=viridis(255))
@@ -248,7 +249,7 @@ sentpca <- im.pca(sent)
 sentpca
 plot(sentpca)
 
-sentpcasd <- focal(sentpca[[1]], w=5, fun=sd)
+sentpcasd <- im.kernel(sentpca[[1]], mw=5, stat="sd")
 
 im.multiframe(1, 2)
 
