@@ -720,4 +720,166 @@ values outside the scale range
 (`stat_slabinterval()`). 
 3: Removed 19714 rows containing non-finite outside
 the scale range (`stat_summary()`). 
+> p6 = im.ridgeline(sent, scale=2, col="mako")
+Error in im.ridgeline(sent, scale = 2, col = "mako") : 
+  unused argument (col = "mako")
+> p6 = im.ridgeline(sent, scale=2, palette="mako")
+> p1 + p6 + p3 + p4
+Picking joint bandwidth of 31.6
+Warning messages:
+1: Removed 19714 rows containing non-finite outside
+the scale range (`stat_boxplot()`). 
+2: Removed 19714 rows containing missing values or
+values outside the scale range
+(`stat_slabinterval()`). 
+3: Removed 19714 rows containing non-finite outside
+the scale range (`stat_summary()`). 
+> p1 + p6 + p4 + p3
+Picking joint bandwidth of 31.6
+Warning messages:
+1: Removed 19714 rows containing non-finite outside
+the scale range (`stat_boxplot()`). 
+2: Removed 19714 rows containing missing values or
+values outside the scale range
+(`stat_slabinterval()`). 
+3: Removed 19714 rows containing non-finite outside
+the scale range (`stat_summary()`). 
+> library(viridis)
+Loading required package: viridisLite
+> 
+> class_cols <- viridis(3, end = 0.5)
+> p3 <- im.boxplot(
++   sent, class, layer = 4,
++   density = TRUE,
++   median_labels = TRUE,
++   legend = FALSE,
++   limits = c(0.01, 0.99),
++   custom_colors = class_cols
++ )
+> 
+> p4 <- im.barplot(
++   class,
++   perc = TRUE,
++   counts = TRUE,
++   rescale = TRUE,
++   custom_colors = class_cols
++ )
+> p1 + p6 + p4 + p3
+Picking joint bandwidth of 31.6
+Warning messages:
+1: Removed 19714 rows containing non-finite outside
+the scale range (`stat_boxplot()`). 
+2: Removed 19714 rows containing missing values or
+values outside the scale range
+(`stat_slabinterval()`). 
+3: Removed 19714 rows containing non-finite outside
+the scale range (`stat_summary()`). 
+> im.barplot <- function(classified_image,
++                        perc = FALSE,
++                        counts = FALSE,
++                        rescale = FALSE,
++                        custom_colors = NULL) {
++   
++   if (!inherits(classified_image, "SpatRaster")) {
++     stop("classified_image should be a SpatRaster.")
++   }
++   
++   if (terra::nlyr(classified_image) != 1) {
++     stop("classified_image should have a single layer.")
++   }
++   
++   df <- terra::as.data.frame(classified_image, na.rm = TRUE)
++   names(df) <- "class"
++   df$class <- as.factor(df$class)
++   
++   total_pixels <- nrow(df)
++   
++   if (isTRUE(perc)) {
++     p <- ggplot2::ggplot(df, ggplot2::aes(x = class, colour = class)) +
++       ggplot2::geom_bar(
++         ggplot2::aes(y = ggplot2::after_stat(count / sum(count) * 100)),
++         fill = NA,
++         linewidth = 1
++       )
++     
++     if (isTRUE(counts)) {
++       p <- p +
++         ggplot2::geom_text(
++           stat = "count",
++           ggplot2::aes(
++             y = ggplot2::after_stat(count / sum(count) * 100),
++             label = round(ggplot2::after_stat(count / sum(count) * 100), 2),
++             colour = class
++           ),
++           vjust = -0.3,
++           size = 3,
++           show.legend = FALSE
++         )
++     }
++     
++     p <- p + ggplot2::labs(x = "Class", y = "Percentage")
++     
++     if (isTRUE(rescale)) {
++       p <- p + ggplot2::scale_y_continuous(limits = c(0, 100))
++     }
++     
++   } else {
++     p <- ggplot2::ggplot(df, ggplot2::aes(x = class, colour = class)) +
++       ggplot2::geom_bar(
++         fill = NA,
++         linewidth = 1
++       )
++     
++     if (isTRUE(counts)) {
++       p <- p +
++         ggplot2::geom_text(
++           stat = "count",
++           ggplot2::aes(label = ggplot2::after_stat(count), colour = class),
++           vjust = -0.3,
++           size = 3,
++           show.legend = FALSE
++         )
++     }
++     
++     p <- p + ggplot2::labs(x = "Class", y = "Number of pixels")
++     
++     if (isTRUE(rescale)) {
++       p <- p + ggplot2::scale_y_continuous(limits = c(0, total_pixels))
++     }
++   }
++   
++   if (!is.null(custom_colors)) {
++     if (!is.character(custom_colors)) {
++       stop("custom_colors must be a character vector of valid color names or hex codes.")
++     }
++     
++     n_classes <- nlevels(df$class)
++     pal <- grDevices::colorRampPalette(custom_colors)(n_classes)
++     
++     p <- p + ggplot2::scale_colour_manual(values = pal)
++   }
++   
++   p <- p + ggplot2::guides(colour = "none")
++   
++   return(p)
++ }
+> class_cols <- viridis::viridis(3, end = 0.5)
+> 
+> p4 <- im.barplot(
++   class,
++   perc = TRUE,
++   counts = TRUE,
++   rescale = TRUE,
++   custom_colors = class_cols
++ )
+> p1 + p6 + p4 + p3
+Picking joint bandwidth of 31.6
+Warning messages:
+1: Removed 19714 rows containing non-finite outside
+the scale range (`stat_boxplot()`). 
+2: Removed 19714 rows containing missing values or
+values outside the scale range
+(`stat_slabinterval()`). 
+3: Removed 19714 rows containing non-finite outside
+the scale range (`stat_summary()`). 
 > 
