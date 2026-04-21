@@ -8,14 +8,14 @@ This repository collects the script used to illustrate the analytical workflow p
 
 ```text
 imageRy_paper/
-├── Visualizaion_example.R
+├── Visualizaion_plot.R
 ├── additional_scripts/
 ├── README.md
 ````
 
 ### Files and folders
 
-* **`Visualization_example.R`**
+* **`Visualization_plot.R`**
   Main script containing the workflow used to build the Figure of the manuscript.
 
 * **`Additional_scripts/`**
