@@ -1,8 +1,17 @@
-# Load imageRy package
+# Load required packages
+# imageRy: core package for remote sensing workflows used in this script
 library(imageRy)
+
+# terra: handles raster data (SpatRaster objects, spatial operations)
 library(terra)
+
+# patchwork: used to combine multiple ggplot objects into a single layout
 library(patchwork)
+
+# ggplot2: provides the plotting framework used by imageRy visualization functions
 library(ggplot2)
+
+# viridis: color palettes (perceptually uniform and colorblind-friendly)
 library(viridis)
 
 # List available example images
