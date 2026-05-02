@@ -9,7 +9,7 @@ This repository collects the script used to illustrate the analytical workflow p
 ```text
 imageRy_paper/
 ├── Visualizaion_plot.R
-├── additional_scripts/
+├── Additional_scripts/
 ├── README.md
 ````
 
