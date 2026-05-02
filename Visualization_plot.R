@@ -1,7 +1,7 @@
 # Load imageRy package
 library(imageRy)
 library(terra)
-library(pacthwork)
+library(patchwork)
 library(ggplot2)
 library(viridis)
 
@@ -12,16 +12,19 @@ im.list()
 sent <- im.import("sentinel.dolomites")
 
 # Classify data
-class <- im.classify(sent, num_cluster = 3)
+class <- im.classify(sent, num_clusters = 3, do_plot = F)
 
 # Save RGB composite and classified image plot
 p1 <- im.ggplotRGB(sent, 2, 4, 3)
+
+# Create ridgeline plot with mako palette
+p2 <- im.ridgeline(sent, scale = 2, palette = "mako")
 
 # Define custom colors
 class_cols <- viridis::viridis(3, end = 0.5)
 
 # Create barplot of class percentages
-p4 <- im.barplot(
+p3 <- im.barplot(
   class,
   perc = TRUE,
   counts = TRUE,
@@ -30,7 +33,7 @@ p4 <- im.barplot(
 )
 
 # Create boxplot of band 4 values grouped by classes
-p3 <- im.boxplot(
+p4 <- im.boxplot(
   sent, class, layer = 4,
   density = TRUE,
   median_labels = TRUE,
@@ -39,8 +42,5 @@ p3 <- im.boxplot(
   custom_colors = viridis::viridis(4, end = 0.5)
 )
 
-# Create ridgeline plot with mako palette
-p6 <- im.ridgeline(sent, scale = 2, palette = "mako")
-
 # Combine final plots
-p1 + p6 + p4 + p3
+p1 + p2 + p3 + p4
